@@ -1,0 +1,26 @@
+name: Issue 5 review materials
+on:
+  push:
+    branches: [codex/issue-5-review-materials]
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Collect the reviewed documentation diff and synthetic samples
+        run: |
+          mkdir -p "$RUNNER_TEMP/issue-5"
+          git diff 1ac50672344e7e97c46662043d3e902e6d83a14f 7e8c2234b7adb217fd8a716d96e54a7596a74f32 -- AGENTS.md DESIGN.md README.md docs/ui-samples/README.md > "$RUNNER_TEMP/issue-5/issue-5-docs.patch"
+          cp -R docs/ui-samples/issue-5 "$RUNNER_TEMP/issue-5/samples"
+          cp issue-5-test-report.md "$RUNNER_TEMP/issue-5/"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: issue-5-review-materials
+          path: ${{ runner.temp }}/issue-5
+          if-no-files-found: error
+          retention-days: 90
