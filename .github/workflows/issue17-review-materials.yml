@@ -12,7 +12,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Unpack the verified synthetic acceptance materials
-        run: unzip -q issue-17-acceptance.zip -d "$RUNNER_TEMP/issue-17"
+        run: python3 -m zipfile -e issue-17-acceptance.zip "$RUNNER_TEMP/issue-17"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: issue-17-acceptance
