@@ -1,0 +1,21 @@
+name: Issue 17 review materials
+on:
+  push:
+    branches: [codex/issue-17-review-materials]
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - name: Unpack the verified synthetic acceptance materials
+        run: unzip -q issue-17-acceptance.zip -d "$RUNNER_TEMP/issue-17"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: issue-17-acceptance
+          path: ${{ runner.temp }}/issue-17
+          if-no-files-found: error
+          retention-days: 90
